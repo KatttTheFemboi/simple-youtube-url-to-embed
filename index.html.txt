@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Embed Generator</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+height: 100vh;
+background-color: #f4f4f4;
+}
+h1 {
+margin-bottom: 20px;
+}
+input {
+padding: 10px;
+font-size: 16px;
+width: 300px;
+margin-bottom: 20px;
+}
+button {
+padding: 10px 20px;
+font-size: 16px;
+cursor: pointer;
+}
+iframe {
+margin-top: 20px;
+border: none;
+width: 560px;
+height: 315px;
+}
+</style>
+</head>
+<body>
+
+<h1>YouTube Embed Generator</h1>
+<input type="text" id="videoURL" placeholder="Paste YouTube Video URL">
+<button onclick="generateEmbed()">Generate Embed</button>
+
+<p id="embedLink"></p>
+<iframe id="videoEmbed" style="display:none;" allowfullscreen></iframe>
+
+<script>
+function generateEmbed() {
+const videoURL = document.getElementById("videoURL").value.trim();
+const videoID = extractVideoID(videoURL);
+
+if (videoID) {
+const embedUrl = `https://www.youtube.com/embed/${videoID}`;
+document.getElementById("embedLink").textContent = `Embed URL: ${embedUrl}`;
+const iframe = document.getElementById("videoEmbed");
+iframe.src = embedUrl;
+iframe.style.display = 'block'; // Show iframe
+} else {
+alert("Please enter a valid YouTube video URL.");
+}
+}
+
+// Function to extract the video ID from the YouTube URL
+function extractVideoID(url) {
+const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[^\s]*)/;
+const match = url.match(regex);
+return match ? match[1] : null;
+}
+</script>
+
+</body>
+</html>
